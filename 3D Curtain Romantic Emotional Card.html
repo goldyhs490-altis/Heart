@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sath Tumhara ❤️ - A Special Message</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@500;700&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --curtain-color-1: #800020;
+            --curtain-color-2: #4a0011;
+            --curtain-color-3: #b3002d;
+            --gold-accent: #ffd700;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0d0208;
+            color: #ffffff;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* 3D Stage & Curtain Perspective Container */
+        .stage-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            perspective: 1200px;
+            overflow: hidden;
+        }
+
+        /* Curtain Wrapper */
+        .curtain-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            display: flex;
+            transition: visibility 2.5s ease-in-out;
+        }
+
+        /* Curtain Half Styling with realistic 3D folds and shadows */
+        .curtain-half {
+            width: 50%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            background: linear-gradient(
+                90deg,
+                var(--curtain-color-2) 0%,
+                var(--curtain-color-1) 10%,
+                var(--curtain-color-3) 25%,
+                var(--curtain-color-2) 40%,
+                var(--curtain-color-1) 55%,
+                var(--curtain-color-3) 70%,
+                var(--curtain-color-2) 85%,
+                #2b000a 100%
+            );
+            background-size: 120px 100%;
+            box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 0, 0, 0.9);
+            transition: transform 2.8s cubic-bezier(0.77, 0, 0.175, 1), box-shadow 2.8s ease;
+            transform-origin: center top;
+            will-change: transform;
+        }
+
+        .curtain-left {
+            left: 0;
+            border-right: 3px solid rgba(255, 215, 0, 0.4);
+        }
+
+        .curtain-right {
+            right: 0;
+            border-left: 3px solid rgba(255, 215, 0, 0.4);
+        }
+
+        /* Curtain Opened State */
+        .curtain-wrapper.open .curtain-left {
+            transform: translateX(-102%) rotateY(-20deg) scaleX(0.85);
+            box-shadow: 20px 0 50px rgba(0, 0, 0, 0.9);
+        }
+
+        .curtain-wrapper.open .curtain-right {
+            transform: translateX(102%) rotateY(20deg) scaleX(0.85);
+            box-shadow: -20px 0 50px rgba(0, 0, 0, 0.9);
+        }
+
+        /* Decorative Gold Rope & Tassels */
+        .curtain-rope {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 70px;
+            height: 180px;
+            z-index: 55;
+            transition: opacity 1.2s ease, transform 1.5s ease;
+            pointer-events: none;
+        }
+
+        .rope-left {
+            left: 20px;
+            border-right: 4px solid var(--gold-accent);
+            border-radius: 0 50px 50px 0;
+            box-shadow: 5px 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .rope-right {
+            right: 20px;
+            border-left: 4px solid var(--gold-accent);
+            border-radius: 50px 0 0 50px;
+            box-shadow: -5px 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .curtain-wrapper.open .curtain-rope {
+            opacity: 0;
+            transform: translateY(-50%) scale(0.5);
+        }
+
+        /* Click Trigger Cue on Curtain */
+        .curtain-cue {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 60;
+            text-align: center;
+            cursor: pointer;
+            transition: opacity 0.8s ease, transform 0.5s ease;
+            background: rgba(15, 3, 10, 0.75);
+            padding: 24px 36px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.3), inset 0 0 15px rgba(255, 215, 0, 0.2);
+            animation: pulseCue 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseCue {
+            0% { transform: translate(-50%, -50%) scale(0.96); box-shadow: 0 0 20px rgba(255, 105, 180, 0.3); }
+            100% { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 40px rgba(255, 215, 0, 0.6); }
+        }
+
+        .curtain-wrapper.open .curtain-cue {
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(0.7);
+        }
+
+        /* Inner Romantic Stage */
+        .inner-stage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background: radial-gradient(circle at center, #2e081d 0%, #15020d 50%, #050004 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Canvas for Fireflies & Swirling Floating Hearts */
+        #effectsCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 15;
+            pointer-events: none;
+        }
+
+        /* Center Display Area for Animated Lines */
+        .text-display-container {
+            position: relative;
+            z-index: 30;
+            width: 90%;
+            max-width: 800px;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .glowing-text {
+            font-family: 'Caveat', 'Great Vibes', cursive;
+            font-size: clamp(2rem, 5vw, 3.8rem);
+            color: #fff0f5;
+            text-shadow: 
+                0 0 10px rgba(255, 192, 203, 0.8),
+                0 0 20px rgba(255, 105, 180, 0.6),
+                0 0 30px rgba(255, 20, 147, 0.5),
+                0 0 40px rgba(255, 182, 193, 0.4);
+            opacity: 0;
+            transform: scale(0.92) translateY(15px);
+            transition: opacity 1.2s ease-in-out, transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            position: absolute;
+            width: 100%;
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+        }
+
+        .glowing-text.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .glowing-text.exit {
+            opacity: 0;
+            transform: scale(1.08) translateY(-15px);
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+
+        /* Controls & Audio Bar */
+        .controls-bar {
+            position: absolute;
+            bottom: 30px;
+            z-index: 40;
+            display: flex;
+            gap: 15px;
+            opacity: 0;
+            transition: opacity 1s ease 1s;
+        }
+
+        .controls-bar.visible {
+            opacity: 1;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 105, 180, 0.3);
+            border-color: rgba(255, 182, 193, 0.6);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+        }
+
+        /* Progress Bar Indicator */
+        .progress-container {
+            position: absolute;
+            top: 25px;
+            width: 80%;
+            max-width: 500px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 40;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .progress-container.visible {
+            opacity: 1;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff758c, #ff7eb3, #ffd700);
+            box-shadow: 0 0 10px #ff758c;
+            transition: width 0.4s linear;
+        }
+
+        /* Decorative Curtain Top Valance */
+        .valance {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(180deg, #3d000c 0%, transparent 100%);
+            z-index: 52;
+            pointer-events: none;
+            border-bottom: 2px dashed rgba(255, 215, 0, 0.3);
+        }
+
+        /* Ending Card Box */
+        .final-card-box {
+            position: absolute;
+            z-index: 45;
+            background: rgba(20, 5, 15, 0.85);
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            border-radius: 20px;
+            padding: 30px 40px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.25);
+            opacity: 0;
+            transform: scale(0.85);
+            pointer-events: none;
+            transition: opacity 1.5s ease, transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 90%;
+            width: 450px;
+        }
+
+        .final-card-box.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Stage Wrapper -->
+    <div class="stage-container">
+
+        <!-- 3D Red Velvet Curtain Layer -->
+        <div class="curtain-wrapper" id="curtainWrapper">
+            <div class="valance"></div>
+            <div class="curtain-half curtain-left"></div>
+            <div class="curtain-half curtain-right"></div>
+            <div class="curtain-rope rope-left"></div>
+            <div class="curtain-rope rope-right"></div>
+
+            <!-- Click/Tap Cue Button -->
+            <div class="curtain-cue" id="curtainCue">
+                <div class="text-amber-300 font-serif text-lg tracking-widest mb-1 uppercase text-xs md:text-sm">For Someone Special</div>
+                <div class="text-2xl md:text-3xl font-bold text-pink-200 tracking-wider font-serif flex items-center gap-3">
+                    <i class="fa-solid fa-heart text-pink-500 animate-bounce text-xl"></i>
+                    <span>Touch To Open</span>
+                    <i class="fa-solid fa-heart text-pink-500 animate-bounce text-xl"></i>
+                </div>
+                <div class="text-xs text-pink-300/70 mt-2 font-light">Turn on sound for better experience ✨</div>
+            </div>
+        </div>
+
+        <!-- Inner Romantic Stage Environment -->
+        <div class="inner-stage">
+            
+            <!-- Dynamic Glowing Fireflies & Floating Hearts Canvas -->
+            <canvas id="effectsCanvas"></canvas>
+
+            <!-- Sequence Progress Indicator Bar -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <!-- Center Text Line Presentation Area -->
+            <div class="text-display-container">
+                <div class="glowing-text" id="textDisplay"></div>
+            </div>
+
+            <!-- Final Heart Card Message Container (Appears after last line) -->
+            <div class="final-card-box" id="finalCard">
+                <div class="text-pink-400 text-4xl mb-3">
+                    <i class="fa-solid fa-heart text-red-500 animate-pulse"></i>
+                </div>
+                <h2 class="font-serif text-2xl md:text-3xl text-pink-200 mb-2" style="font-family: 'Great Vibes', cursive;">Sada Tumhare Sath...</h2>
+                <p class="text-pink-100/80 text-sm md:text-base font-light mb-6">Har lamha tumhara khyaal hai. Apna Dhyan Rakhna ❤️</p>
+                <button id="replayBtn" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-pink-500 to-rose-600 text-white font-medium shadow-lg hover:shadow-pink-500/50 hover:scale-105 transition-all text-sm tracking-wide">
+                    <i class="fa-solid fa-rotate-right mr-2"></i> Read Again
+                </button>
+            </div>
+
+            <!-- Bottom Floating Controls -->
+            <div class="controls-bar" id="controlsBar">
+                <button class="icon-btn" id="audioToggle" title="Toggle Ambient Music">
+                    <i class="fa-solid fa-music text-pink-300" id="audioIcon"></i>
+                </button>
+                <button class="icon-btn" id="pauseToggle" title="Pause / Resume">
+                    <i class="fa-solid fa-pause text-pink-300" id="pauseIcon"></i>
+                </button>
+                <button class="icon-btn" id="restartBtn" title="Restart Sequence">
+                    <i class="fa-solid fa-arrow-rotate-left text-pink-300"></i>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        /* ===================================================
+           1. EXACT LINES ARRAY PROVIDED BY USER
+           =================================================== */
+        const lines = [
+            "Bhoot der baad koi card bna Raha hu tumhare",
+            "Right?",
+            "Pta nahi ajj bhoot man kar raha tha .",
+            "Pehle mein bhoot carda bnata tha",
+            "Har day Kuch special",
+            "Soch raha tha band kyu kar diya .",
+            "Shayad mein shuru mein cards isliye bnata tha",
+            "Taki tum paas raho.",
+            "Or ab aisa nahi ki ab nahi chahta",
+            "Ya ab pyaar ni karta",
+            "Shayad tab khone ka dar tha",
+            "Ki kahi chale na jao",
+            "Aisa nahi ab nahi hai",
+            "Ya shayad mein tumhe khush karne ke liye",
+            "Or aisa bhi nahi ki ab tumhe khush nahi rakhna chahta",
+            "Or aisa bhi nahi ki tum khush nahi",
+            "Ya mein khush nahi",
+            "I don't know mein kya likha raha hu",
+            "A little confused right now",
+            "Par aisa nahi pareshan hu.",
+            "Aacha hu",
+            "Tum ho sath to",
+            "I think shayad tumhari thodu fikar ho rahi hai",
+            "Kyuki door ho or man karta hai",
+            "Tumhare paas rehke tumhara khyaal rakhu",
+            "Par nahi kar sakta",
+            "Isliye shayad ajj kal man ajeeb ho jata hai",
+            "Or mujhe tumhe pareshan bhi nahi karna",
+            "Because I want tum jaldi se ek dum mast ho jao",
+            "Aisa bhi nahi yeh koi badi baat hai",
+            "Vo to ho hi jaogi",
+            "I think mein tumhare liye zyada",
+            "Possesive hu",
+            "Mein chahta hu bas hum dono",
+            "Jaldi sath mein momos khaye veg",
+            "Non veg nahi ok .",
+            "And ek or baat",
+            "I love you soooooooooo ok much",
+            "You are always special to me .",
+            "In every situation",
+            "In every condition.",
+            "My baby ."
+        ];
+
+        /* Delay per line set strictly to 5 seconds (5000ms) as requested */
+        const DISPLAY_DELAY = 5000; 
+
+        /* ===================================================
+           2. STATE & DOM ELEMENTS
+           =================================================== */
+        let currentIndex = 0;
+        let isPaused = false;
+        let sequenceTimer = null;
+        let curtainOpened = false;
+        let audioContext = null;
+        let isAudioPlaying = false;
+        let audioGain = null;
+        let musicOscillators = [];
+
+        const curtainWrapper = document.getElementById('curtainWrapper');
+        const curtainCue = document.getElementById('curtainCue');
+        const textDisplay = document.getElementById('textDisplay');
+        const progressBar = document.getElementById('progressBar');
+        const progressContainer = document.getElementById('progressContainer');
+        const controlsBar = document.getElementById('controlsBar');
+        const audioToggle = document.getElementById('audioToggle');
+        const audioIcon = document.getElementById('audioIcon');
+        const pauseToggle = document.getElementById('pauseToggle');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const restartBtn = document.getElementById('restartBtn');
+        const finalCard = document.getElementById('finalCard');
+        const replayBtn = document.getElementById('replayBtn');
+
+        /* ===================================================
+           3. CANVAS BACKGROUND: FIREFLIES & SWIRLING HEARTS
+           =================================================== */
+        const canvas = document.getElementById('effectsCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // Firefly Class
+        class Firefly {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2.5 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.speedY = (Math.random() - 0.5) * 0.6;
+                this.alpha = Math.random();
+                this.fadeSpeed = Math.random() * 0.015 + 0.005;
+                this.color = Math.random() > 0.3 ? '#ffdd73' : '#ff9ebb'; // Warm yellow & soft pink
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Bounce off boundaries gently
+                if (this.x < 0 || this.x > width) this.speedX *= -1;
+                if (this.y < 0 || this.y > height) this.speedY *= -1;
+
+                // Pulsating brightness
+                this.alpha += this.fadeSpeed;
+                if (this.alpha >= 1 || this.alpha <= 0.1) {
+                    this.fadeSpeed = -this.fadeSpeed;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.shadowBlur = this.size * 5;
+                ctx.shadowColor = this.color;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // Swirling Heart Class
+        class FloatingHeart {
+            constructor() {
+                this.reset(true);
+            }
+
+            reset(initial = false) {
+                this.x = Math.random() * width;
+                this.y = initial ? Math.random() * height : height + 20;
+                this.size = Math.random() * 14 + 10;
+                this.speedY = Math.random() * 0.7 + 0.3;
+                this.swayAngle = Math.random() * Math.PI * 2;
+                this.swaySpeed = Math.random() * 0.02 + 0.01;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotSpeed = (Math.random() - 0.5) * 0.02;
+                this.color = `rgba(${255}, ${Math.floor(Math.random() * 100 + 100)}, ${Math.floor(Math.random() * 150 + 120)}, ${this.opacity})`;
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.swayAngle += this.swaySpeed;
+                this.x += Math.sin(this.swayAngle) * 0.5;
+                this.rotation += this.rotSpeed;
+
+                if (this.y < -30) {
+                    this.reset(false);
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = 'rgba(255, 105, 180, 0.4)';
+
+                // Draw Path SVG-like Heart
+                ctx.beginPath();
+                const topCurveHeight = this.size * 0.3;
+                ctx.moveTo(0, topCurveHeight);
+                // Top left curve
+                ctx.bezierCurveTo(
+                    0, 0, 
+                    -this.size / 2, 0, 
+                    -this.size / 2, topCurveHeight
+                );
+                // Bottom left curve
+                ctx.bezierCurveTo(
+                    -this.size / 2, (this.size + topCurveHeight) / 2, 
+                    0, this.size, 
+                    0, this.size
+                );
+                // Bottom right curve
+                ctx.bezierCurveTo(
+                    0, this.size, 
+                    this.size / 2, (this.size + topCurveHeight) / 2, 
+                    this.size / 2, topCurveHeight
+                );
+                // Top right curve
+                ctx.bezierCurveTo(
+                    this.size / 2, 0, 
+                    0, 0, 
+                    0, topCurveHeight
+                );
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // Initialize particles
+        const fireflies = Array.from({ length: 45 }, () => new Firefly());
+        const hearts = Array.from({ length: 25 }, () => new FloatingHeart());
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw Fireflies
+            fireflies.forEach(firefly => {
+                firefly.update();
+                firefly.draw();
+            });
+
+            // Draw Hearts
+            hearts.forEach(heart => {
+                heart.update();
+                heart.draw();
+            });
+
+            requestAnimationFrame(animateCanvas);
+        }
+
+        /* ===================================================
+           4. AMBIENT WEB AUDIO SYNTHESIZER (ROMANTIC PIANO MELODY)
+           =================================================== */
+        function initAudio() {
+            if (audioContext) return;
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                audioContext = new AudioCtx();
+                audioGain = audioContext.createGain();
+                audioGain.gain.setValueAtTime(0.15, audioContext.currentTime);
+                audioGain.connect(audioContext.destination);
+
+                playAmbientMelody();
+            } catch (e) {
+                console.log("Web Audio API not supported", e);
+            }
+        }
+
+        function playAmbientMelody() {
+            if (!audioContext) return;
+
+            // Warm Arpeggio Note Frequencies (Soft Dreamy Keys in C Major / A Minor)
+            const notes = [
+                261.63, 329.63, 392.00, 493.88, 523.25, // C4, E4, G4, B4, C5
+                220.00, 261.63, 329.63, 392.00, 440.00, // A3, C4, E4, G4, A4
+                174.61, 220.00, 261.63, 329.63, 349.23, // F3, A3, C4, E4, F4
+                196.00, 246.94, 293.66, 392.00, 493.88  // G3, B3, D4, G4, B4
+            ];
+
+            let noteIdx = 0;
+
+            function playNextNote() {
+                if (!isAudioPlaying || !audioContext) return;
+
+                const osc = audioContext.createOscillator();
+                const noteGain = audioContext.createGain();
+
+                // Soft sine wave for warm lullaby tone
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(notes[noteIdx % notes.length], audioContext.currentTime);
+
+                // Gentle Envelope
+                noteGain.gain.setValueAtTime(0.001, audioContext.currentTime);
+                noteGain.gain.exponentialRampToValueAtTime(0.08, audioContext.currentTime + 0.3);
+                noteGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 2.5);
+
+                osc.connect(noteGain);
+                noteGain.connect(audioGain);
+
+                osc.start();
+                osc.stop(audioContext.currentTime + 2.6);
+
+                noteIdx++;
+                setTimeout(playNextNote, 800 + Math.random() * 400);
+            }
+
+            isAudioPlaying = true;
+            playNextNote();
+        }
+
+        function toggleAudio() {
+            if (!audioContext) {
+                initAudio();
+                return;
+            }
+
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+                isAudioPlaying = true;
+                audioIcon.className = 'fa-solid fa-music text-pink-300';
+            } else if (isAudioPlaying) {
+                audioGain.gain.setValueAtTime(0, audioContext.currentTime);
+                isAudioPlaying = false;
+                audioIcon.className = 'fa-solid fa-volume-xmark text-gray-400';
+            } else {
+                audioGain.gain.setValueAtTime(0.15, audioContext.currentTime);
+                isAudioPlaying = true;
+                playAmbientMelody();
+                audioIcon.className = 'fa-solid fa-music text-pink-300';
+            }
+        }
+
+        /* ===================================================
+           5. SEQUENTIAL TEXT DISPLAY LOGIC (5s DELAY)
+           =================================================== */
+        function showLine(index) {
+            if (index >= lines.length) {
+                // Sequence completed
+                finishSequence();
+                return;
+            }
+
+            // Update Progress Bar
+            const progressPercent = ((index + 1) / lines.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+
+            // Fade Out current line
+            textDisplay.classList.remove('active');
+            textDisplay.classList.add('exit');
+
+            setTimeout(() => {
+                // Update text content
+                textDisplay.textContent = lines[index];
+                textDisplay.classList.remove('exit');
+
+                // Trigger reflow for smooth transition restart
+                void textDisplay.offsetWidth;
+
+                // Fade In new line
+                textDisplay.classList.add('active');
+            }, 800); // 800ms fade transition window
+
+            // Schedule next line
+            if (!isPaused) {
+                sequenceTimer = setTimeout(() => {
+                    currentIndex++;
+                    showLine(currentIndex);
+                }, DISPLAY_DELAY);
+            }
+        }
+
+        function startSequence() {
+            currentIndex = 0;
+            isPaused = false;
+            finalCard.classList.remove('show');
+            progressContainer.classList.add('visible');
+            controlsBar.classList.add('visible');
+            pauseIcon.className = 'fa-solid fa-pause text-pink-300';
+            showLine(currentIndex);
+        }
+
+        function finishSequence() {
+            clearTimeout(sequenceTimer);
+            textDisplay.classList.remove('active');
+            
+            setTimeout(() => {
+                textDisplay.textContent = '';
+                finalCard.classList.add('show');
+            }, 1000);
+        }
+
+        function togglePause() {
+            if (isPaused) {
+                isPaused = false;
+                pauseIcon.className = 'fa-solid fa-pause text-pink-300';
+                showLine(currentIndex);
+            } else {
+                isPaused = true;
+                clearTimeout(sequenceTimer);
+                pauseIcon.className = 'fa-solid fa-play text-pink-300';
+            }
+        }
+
+        function restartSequence() {
+            clearTimeout(sequenceTimer);
+            startSequence();
+        }
+
+        /* ===================================================
+           6. EVENT LISTENERS & INITIALIZATION
+           =================================================== */
+        function openCurtain() {
+            if (curtainOpened) return;
+            curtainOpened = true;
+
+            // Open curtain animation
+            curtainWrapper.classList.add('open');
+
+            // Initialize ambient sound
+            initAudio();
+
+            // Hide curtain overlay after transition completes
+            setTimeout(() => {
+                curtainWrapper.style.visibility = 'hidden';
+            }, 2800);
+
+            // Start Text Sequence with a soft slight delay after curtain begins sliding
+            setTimeout(() => {
+                startSequence();
+            }, 1200);
+        }
+
+        curtainCue.addEventListener('click', openCurtain);
+        curtainWrapper.addEventListener('click', openCurtain);
+
+        audioToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleAudio();
+        });
+
+        pauseToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            togglePause();
+        });
+
+        restartBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            restartSequence();
+        });
+
+        replayBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            restartSequence();
+        });
+
+        // Start Canvas Particles on Page Load
+        window.onload = () => {
+            animateCanvas();
+        };
+    </script>
+</body>
+</html>
